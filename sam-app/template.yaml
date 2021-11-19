@@ -39,13 +39,33 @@ Resources:
       MemorySize: 128
       Timeout: 100
       Description: Get book by id.
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BooksTable
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          BOOKS_TABLE: !Ref BooksTable
       Events:
         GetBookById:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /get-book-by-id
+            Path: /get-book-by-id/{id}
             Method: get
             RestApiId: !Ref ApiDeployment
+  BooksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+      TableName: Books
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

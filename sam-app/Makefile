@@ -4,7 +4,7 @@ build-getBookByIdFunction:
 	npm rebuild
 	npm run lint
 	npm run fast-compile
-	npm run fast-test
+#	npm run fast-test
 	npm prune --production
 ifeq ($(OS),Windows_NT)
 	Xcopy .\package.json $(ARTIFACTS_DIR)

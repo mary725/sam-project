@@ -1,4 +1,5 @@
 import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2, Handler } from 'aws-lambda';
+import AWS from 'aws-sdk';
 // const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
 
@@ -17,7 +18,32 @@ import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2, Handler } from 'a
 export const lambdaHandler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2> = async (event) => {
     console.log('event', event);
     try {
+        if (!event.pathParameters?.id) {
+            console.log('API Gateway event is missing the /{id} parameter path required.');
+            return { statusCode: 404 };
+        }
+        if (!process.env.BOOKS_TABLE) {
+            console.log('BOOKS_TABLE variable is empty.');
+            throw Error();
+        }
         // const ret = await axios(url);
+        const docClient = new AWS.DynamoDB.DocumentClient();
+        const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
+            TableName: process.env.BOOKS_TABLE,
+            Item: {'id': event.pathParameters.id, 'title': 'new title', 'details': '{\"info\":\"info\"}'}
+        };
+
+        console.log(params);
+        await docClient.put(params).promise();
+        /*const params: AWS.DynamoDB.DocumentClient.GetItemInput = {
+            TableName: process.env.BOOKS_TABLE,
+            Key: {
+                id: event.pathParameters.id
+            }
+        };
+        const result: AWS.DynamoDB.DocumentClient.GetItemOutput = await docClient.get(params).promise();
+        console.log(result);
+        */
         return {
             statusCode: 200,
             headers: {
@@ -26,7 +52,7 @@ export const lambdaHandler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResul
                 "Access-Control-Allow-Methods": "GET" // Allow only GET request 
             },
             body: JSON.stringify({
-                message: 'hello world'
+                message: 'hello world'//JSON.stringify(result.Item)
             })
         };
     } catch (err) {
