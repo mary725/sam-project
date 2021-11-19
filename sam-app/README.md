@@ -1,4 +1,4 @@
-#sam deploy --profile=my_profile --config-env=dev --resolve-s3
+#sam build && sam deploy --profile=my_profile --config-env=dev --resolve-s3
 #sam deploy --profile=my_profile --config-env=prod --resolve-s3
 #sam delete --stack-name=sam-stack --profile=my_profile --region=us-east-1
 #sam delete --stack-name=aws-sam-cli-managed-default --profile=my_profile --region=us-east-1

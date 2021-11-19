@@ -17,6 +17,7 @@ import AWS from 'aws-sdk';
  */
 export const lambdaHandler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResultV2> = async (event) => {
     console.log('event', event);
+    console.log('1111111', process.env.AWS_REGION); // https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-region.html
     try {
         if (!event.pathParameters?.id) {
             console.log('API Gateway event is missing the /{id} parameter path required.');
