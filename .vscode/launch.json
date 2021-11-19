@@ -3,11 +3,11 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
-            "name": "sam-app:HelloWorldFunction (nodejs14.x)",
+            "name": "sam-app:getBookByIdFunction (nodejs14.x)",
             "invokeTarget": {
                 "target": "template",
                 "templatePath": "${workspaceFolder}/sam-app/template.yaml",
-                "logicalId": "HelloWorldFunction"
+                "logicalId": "getBookByIdFunction"
             },
             "lambda": {
                 "payload": {},
@@ -18,14 +18,14 @@
         {
             "type": "aws-sam",
             "request": "direct-invoke",
-            "name": "API sam-app:HelloWorldFunction (nodejs14.x)",
+            "name": "API sam-app:getBookByIdFunction (nodejs14.x)",
             "invokeTarget": {
                 "target": "api",
                 "templatePath": "${workspaceFolder}/sam-app/template.yaml",
-                "logicalId": "HelloWorldFunction"
+                "logicalId": "getBookByIdFunction"
             },
             "api": {
-                "path": "/hello",
+                "path": "/get-book-by-id",
                 "httpMethod": "get",
                 "payload": {
                     "json": {}
